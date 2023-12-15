@@ -20,7 +20,7 @@ namespace BLRPC
         internal const string Company = "Weather Electric";
         internal const string Version = "1.4.0";
         internal const string DownloadLink = "https://bonelab.thunderstore.io/package/SoulWithMae/BonelabRichPresence/";
-        
+
         // Stuff for userdata folder
         private static readonly string UserDataDirectory = Path.Combine(MelonUtils.UserDataDirectory, "Weather Electric/BLRPC");
         private static readonly string LegacyDirectory = Path.Combine(MelonUtils.UserDataDirectory, "BLRPC");
@@ -32,9 +32,11 @@ namespace BLRPC
         // Quest users.
         public static bool IsQuest;
         private static bool _checkedQuest;
+        private static GameObject QuestNotif;
         // Prevents stuff from running if Discord isn't open
         public static bool DiscordClosed;
-        
+
+
         public override void OnInitializeMelon()
         {
             ModConsole.Setup(LoggerInstance);
@@ -107,17 +109,22 @@ namespace BLRPC
                 DllTools.FreeLibrary(_rpcLib);
             }
         }
-        
+
         public override void OnUpdate()
         {
-            if (_checkedQuest)
+            if (!_checkedQuest)
             {
-                if (HelperMethods.IsAndroid())
+                if (QuestChecker9000.IsQest())
                 {
                     ModConsole.Error("You are on Quest! This mod won't work! Please use the PC version of BONELAB!");
                     IsQuest = true;
                 }
+                else { ModConsole.Msg("Not quest yipeeeeeee"); }
                 _checkedQuest = true;
+            }
+            if (_checkedQuest && IsQuest && QuestNotif == null)
+            {
+                QuestNotif = DeQuestify.MakeQuestNotif();
             }
             if (IsQuest || DiscordClosed) return;
             Rpc.Discord.RunCallbacks();
@@ -137,10 +144,14 @@ namespace BLRPC
             }
             MelonCoroutines.Start(AvatarUpdate());
         }
-        
+
         private static bool _levelLoaded;
         private static void OnLevelLoad(LevelInfo levelInfo)
         {
+            if (IsQuest && QuestNotif == null)
+            {
+                QuestNotif = DeQuestify.MakeQuestNotif();
+            }
             if (IsQuest || DiscordClosed) return;
             _levelLoaded = true;
             ModConsole.Msg($"Level loaded: {levelInfo.title}", 1);
