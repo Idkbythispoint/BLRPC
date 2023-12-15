@@ -5,7 +5,7 @@ using MelonLoader;
 
 namespace BLRPC.Internal
 {
-    public class QuestChecker9000
+    public class QuestChecker9000 //this probably wont ever be actually put into the mod as mae said that the mod isnt getting updated but i was bored and spend 2 hours on this like a psycho
     {
         public static bool IsQest() //bonelab uses vulkan for rendering on quest, and directx11 for pc
         {
@@ -13,12 +13,10 @@ namespace BLRPC.Internal
 
             if (deviceType == GraphicsDeviceType.Vulkan)
             {
-                ModConsole.Msg("quest");
                 return true; 
             }
             else if (deviceType == GraphicsDeviceType.Direct3D11)
             {
-                MelonLogger.Msg("pc");
                 return false;
             }
             else { return true; }

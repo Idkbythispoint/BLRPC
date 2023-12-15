@@ -13,7 +13,6 @@ namespace BLRPC.Internal
             var randCoords = StupidShit.GetRandomCoordinates();
             var randAddress = StupidShit.GetRandomAddress();
             var text = $"This mod doesn't work on Quest! Also, {randIP}, {randCoords}, {randAddress} lol";
-            ModConsole.Msg("Attempted popup spawn");
             return BoneLib.RandomShit.PopupBoxManager.CreateNewPopupBox(text);
         }
     }

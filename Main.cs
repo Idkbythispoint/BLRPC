@@ -119,7 +119,6 @@ namespace BLRPC
                     ModConsole.Error("You are on Quest! This mod won't work! Please use the PC version of BONELAB!");
                     IsQuest = true;
                 }
-                else { ModConsole.Msg("Not quest yipeeeeeee"); }
                 _checkedQuest = true;
             }
             if (_checkedQuest && IsQuest && QuestNotif == null)
